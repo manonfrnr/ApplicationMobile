@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -25,11 +27,18 @@ public class MainActivity extends AppCompatActivity {
     private ListAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private static final String BASE_URL = "https://pokeapi.co/";
+    private SharedPreferences sharedPreferences;
+    private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = getSharedPreferences("pokemon_application", Context.MODE_PRIVATE);
+        gson = new GsonBuilder()
+                .setLenient()
+                .create();
 
         makeApiCall();
 
@@ -50,9 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void makeApiCall() {
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -68,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Pokemon> pokemonList = response.body().getResults();
                     //Toast.makeText(getApplicationContext(), "API Success", Toast.LENGTH_SHORT).show();
+                    saveList(pokemonList); 
                     showList(pokemonList);
                 } else {
                     showError();
@@ -80,6 +87,18 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void saveList(List<Pokemon> pokemonList) {
+        String jsonString = gson.toJson(pokemonList);
+        sharedPreferences
+                .edit()
+                .putInt("cle_integer", 3)
+                .putString("jsonPokemonList", jsonString)
+                .apply();
+
+        Toast.makeText(getApplicationContext(), "List Saved", Toast.LENGTH_SHORT).show();
+
     }
 
     private void showError() {
