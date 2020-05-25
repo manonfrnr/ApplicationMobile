@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">Blabla</string>
+    <string name="app_name">Application Pokémon</string>
     <string name="detail_text_description">Ecran Detail</string>
+    <string name="nom_poke">Nom:</string>
+    <string name="poids_poke">Poids:</string>
+    <string name="taille_poke">Taille:</string>
 </resources>

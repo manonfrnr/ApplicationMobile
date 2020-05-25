@@ -45,7 +45,6 @@ public class MainController {
             public void onResponse(Call<RestPokemonResponse> call, Response<RestPokemonResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Pokemon> pokemonList = response.body().getResults();
-                    //Toast.makeText(getApplicationContext(), "API Success", Toast.LENGTH_SHORT).show();
                     saveList(pokemonList);
                     view.showList(pokemonList);
                 } else {
@@ -78,23 +77,9 @@ public class MainController {
                 .putInt("cle_integer", 3)
                 .putString(Constants.KEY_POKEMON_LIST, jsonString)
                 .apply();
-
-        //Toast.makeText(getApplicationContext(), "List Saved", Toast.LENGTH_SHORT).show();
-
     }
 
     public void onItemClick(Pokemon pokemon){
-        //System.out.println("On item click" + pokemon);
         view.navigateToDetails(pokemon);
-
     }
-
-    public void onButtonAClick(){
-
-    }
-
-    public void onButtonBClick(){
-
-    }
-
 }

@@ -3,21 +3,20 @@ package com.github.manonfrnr.blabla.presentation.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.manonfrnr.blabla.R;
 import com.github.manonfrnr.blabla.Singletons;
-import com.github.manonfrnr.blabla.presentation.controller.MainController;
+import com.github.manonfrnr.blabla.presentation.controller.DetailController;
 import com.github.manonfrnr.blabla.presentation.model.Pokemon;
 
 public class DetailActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private ListAdapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-
-    private TextView txtDetail;
+    private DetailController controller;
+    private TextView name;
+    private TextView height;
+    private TextView weight;
 
 
     @Override
@@ -25,17 +24,28 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        txtDetail = findViewById(R.id.detail_txt);
+
         Intent intent = getIntent();
         String pokemonJson = intent.getStringExtra("pokemonKey");
         Pokemon pokemon = Singletons.getGson().fromJson(pokemonJson, Pokemon.class);
-        System.out.println(pokemonJson);
-        System.out.println(pokemon);
-        showDetail(pokemon);
+
+        controller = new DetailController(this, Singletons.getGson(), Singletons.getsharedPreferencesInstance(getApplicationContext()), pokemon);
+        controller.onStart();
 
     }
 
-    private void showDetail(Pokemon pokemon) {
-        txtDetail.setText(pokemon.getName());
+    public void showDetail(Pokemon pokemon) {
+        name = findViewById(R.id.namePokemon);
+        name.setText(pokemon.getName());
+
+        weight = findViewById(R.id.weightPokemon);
+        weight.setText(Integer.toString(pokemon.getWeight()));
+
+        height = findViewById(R.id.heightPokemon);
+        height.setText(Integer.toString(pokemon.getHeight()));
+    }
+
+    public void showError() {
+        Toast.makeText(getApplicationContext(), "API Error", Toast.LENGTH_SHORT).show();
     }
 }

@@ -59,7 +59,5 @@ public class MainActivity extends AppCompatActivity {
         Intent myIntent = new Intent(MainActivity.this, DetailActivity.class);
         myIntent.putExtra("pokemonKey", Singletons.getGson().toJson(pokemon));
         MainActivity.this.startActivity(myIntent);
-
-        //Toast.makeText(getApplicationContext(), "TODO NAVIGATE", Toast.LENGTH_SHORT).show();
     }
 }
