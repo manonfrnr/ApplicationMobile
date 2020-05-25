@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.github.manonfrnr.blabla.Constants;
 import com.github.manonfrnr.blabla.R;
+import com.github.manonfrnr.blabla.Singletons;
 import com.github.manonfrnr.blabla.data.PokeApi;
 import com.github.manonfrnr.blabla.presentation.controller.MainController;
 import com.github.manonfrnr.blabla.presentation.model.Pokemon;
@@ -40,12 +41,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        controller = new MainController(this,
-                new GsonBuilder().setLenient().create(),
-                getSharedPreferences(Constants.PREFERENCES_NAME, Context.MODE_PRIVATE)
-    );
+        controller = new MainController(this, Singletons.getGson(), Singletons.getsharedPreferencesInstance(getApplicationContext()));
         controller.onStart();
-
     }
 
     public void showList(List <Pokemon> pokemonList) {
