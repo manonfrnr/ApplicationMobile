@@ -6,7 +6,7 @@ public class RestPokemonResponse {
     private Integer count;
     private String next;
     private List <Pokemon> results;
-
+//c
     public Integer getCount() {
         return count;
     }
