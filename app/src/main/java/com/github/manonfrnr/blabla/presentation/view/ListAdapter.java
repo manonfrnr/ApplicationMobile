@@ -1,4 +1,4 @@
-package com.github.manonfrnr.blabla;
+package com.github.manonfrnr.blabla.presentation.view;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.github.manonfrnr.blabla.R;
+import com.github.manonfrnr.blabla.presentation.model.Pokemon;
 
 import java.util.List;
 
