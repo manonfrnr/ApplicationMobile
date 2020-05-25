@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.github.manonfrnr.blabla.data.PokeApi;
+import com.github.manonfrnr.blabla.data.PokeDetailApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -14,6 +15,7 @@ public class Singletons {
 
     private  static Gson gsonInstance;
     private static PokeApi pokeApiInstance;
+    private static PokeDetailApi pokeDetailApiInstance;
     private static SharedPreferences sharedPreferencesInstance;
 
     public static Gson getGson(){
@@ -29,6 +31,14 @@ public class Singletons {
             pokeApiInstance = retrofit.create(PokeApi.class);
         }
         return pokeApiInstance;
+    }
+
+    public static PokeDetailApi getPokeDetailApi(){
+        if(pokeApiInstance == null){
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(GsonConverterFactory.create(getGson())).build();
+            pokeDetailApiInstance = retrofit.create(PokeDetailApi.class);
+        }
+        return pokeDetailApiInstance;
     }
 
     public static SharedPreferences getsharedPreferencesInstance(Context context){
