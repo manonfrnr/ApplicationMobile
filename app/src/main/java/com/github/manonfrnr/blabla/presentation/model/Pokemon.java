@@ -1,4 +1,4 @@
-package com.github.manonfrnr.blabla;
+package com.github.manonfrnr.blabla.presentation.model;
 
 public class Pokemon {
     private String name;
