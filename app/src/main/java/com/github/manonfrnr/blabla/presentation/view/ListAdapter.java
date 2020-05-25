@@ -3,6 +3,8 @@ package com.github.manonfrnr.blabla.presentation.view;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,10 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.manonfrnr.blabla.R;
 import com.github.manonfrnr.blabla.presentation.model.Pokemon;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
+public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> implements Filterable {
     private  List<Pokemon> values;
+    private List<Pokemon> values_copy;
     private  OnItemClickListener listener;
 
     public interface OnItemClickListener {
@@ -55,6 +59,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public ListAdapter(List<Pokemon> myDataset, OnItemClickListener listener) {
         this.values = myDataset;
         this.listener = listener;
+        values_copy = new ArrayList<>(values);
     }
 
     // Create new views (invoked by the layout manager)
@@ -92,5 +97,42 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public int getItemCount() {
         return values.size();
     }
+
+    @Override
+    public Filter getFilter(){
+        return valuesFilter;
+    }
+
+    private Filter valuesFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Pokemon> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0){
+                filteredList.addAll(values_copy);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (Pokemon poke : values_copy){
+                    if (poke.getName().toLowerCase().contains(filterPattern)){
+                        filteredList.add(poke);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+           values.clear();
+           values.addAll((List) results.values);
+           notifyDataSetChanged();
+
+        }
+    };
 
 }
